@@ -8,7 +8,7 @@ import authContext from "../context/auth/authContext";
 const CrearCuenta = () => {
   // Acceder al state
   const AuthContext = useContext(authContext);
-  const { usuarioAutenticado } = AuthContext;
+  const { registrarUsuario } = AuthContext;
 
   // Formulario y validacion con formik y yup
   const formik = useFormik({
@@ -27,7 +27,7 @@ const CrearCuenta = () => {
         .min(6, "El password debe ser de al menos 6 caracteres"),
     }),
     onSubmit: (valores) => {
-      console.log(valores);
+      registrarUsuario(valores);
     },
   });
 
