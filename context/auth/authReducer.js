@@ -1,4 +1,5 @@
 import {
+  USUARIO_AUTENTICADO,
   REGISTRO_EXITOSO,
   REGISTRO_ERROR,
   LIMPIAR_ALERTA,
@@ -25,6 +26,14 @@ export default (state, action) => {
         ...state,
         autenticado: true,
       };
+
+    case USUARIO_AUTENTICADO:
+      return {
+        ...state,
+        usuario: action.payload,
+        autenticado: true,
+      };
+
     case LIMPIAR_ALERTA:
       return {
         ...state,
