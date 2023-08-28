@@ -3,8 +3,12 @@ import { useDropzone } from "react-dropzone";
 import clienteAxios from "../config/axios";
 
 const Dropzone = () => {
+  const onDropRejected = () => {
+    console.log("No se pudo subir, excede el limite permitido");
+  };
+
   // useCallback es para que no se ejecute cada vez que se renderiza
-  const onDrop = useCallback(async (acceptedFiles) => {
+  const onDropAccepted = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles);
 
     const formData = new FormData();
@@ -15,7 +19,7 @@ const Dropzone = () => {
 
   // Extraer contenido de Dropzone
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-    useDropzone({ onDrop });
+    useDropzone({ onDropAccepted, onDropRejected, maxSize: 1000000 });
 
   const archivos = acceptedFiles.map((archivo) => (
     <li
