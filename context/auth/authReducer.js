@@ -5,6 +5,7 @@ import {
   LIMPIAR_ALERTA,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
+  CERRAR_SESION,
 } from "../../types";
 
 export default (state, action) => {
@@ -32,6 +33,14 @@ export default (state, action) => {
         ...state,
         usuario: action.payload,
         autenticado: true,
+      };
+    case CERRAR_SESION:
+      localStorage.removeItem("rns-token");
+      return {
+        ...state,
+        usuario: null,
+        token: null,
+        autenticado: null,
       };
 
     case LIMPIAR_ALERTA:

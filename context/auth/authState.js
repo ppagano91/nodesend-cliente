@@ -9,6 +9,7 @@ import {
   LIMPIAR_ALERTA,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
+  CERRAR_SESION,
 } from "../../types";
 
 import clienteAxios from "../../config/axios";
@@ -102,6 +103,13 @@ const AuthState = ({ children }) => {
     }
   };
 
+  const cerrarSesion = () => {
+    console.log("Cerrando Sesión");
+    dispatch({
+      type: CERRAR_SESION,
+    });
+  };
+
   // Funciones
   return (
     <authContext.Provider
@@ -113,6 +121,7 @@ const AuthState = ({ children }) => {
         registrarUsuario,
         usuarioAutenticado,
         iniciarSesion,
+        cerrarSesion,
       }}
     >
       {children}
