@@ -4,9 +4,14 @@ import clienteAxios from "../config/axios";
 
 const Dropzone = () => {
   // useCallback es para que no se ejecute cada vez que se renderiza
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles);
-  });
+
+    const formData = new FormData();
+    formData.append("archivo", acceptedFiles[0]);
+    const resultado = await clienteAxios.post("/api/archivos", formData);
+    console.log(resultado);
+  }, []);
 
   // Extraer contenido de Dropzone
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
