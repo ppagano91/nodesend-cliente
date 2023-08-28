@@ -19,6 +19,12 @@ export default (state, action) => {
         ...state,
         mensaje: action.payload,
       };
+    case LOGIN_EXITOSO:
+      localStorage.setItem("rns-token", action.payload);
+      return {
+        ...state,
+        autenticado: true,
+      };
     case LIMPIAR_ALERTA:
       return {
         ...state,

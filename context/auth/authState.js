@@ -16,7 +16,8 @@ import clienteAxios from "../../config/axios";
 const AuthState = ({ children }) => {
   // Definir un state inicial
   const initialState = {
-    token: "",
+    token:
+      typeof window !== "undefined" ? localStorage.getItem("rns-token") : "",
     autenticado: null,
     usuario: null,
     mensaje: null,
@@ -54,6 +55,10 @@ const AuthState = ({ children }) => {
   const iniciarSesion = async (datos) => {
     try {
       const respuesta = await clienteAxios.post("/api/auth", datos);
+      dispatch({
+        type: LOGIN_EXITOSO,
+        payload: respuesta.data.token,
+      });
 
       console.log(respuesta);
     } catch (error) {

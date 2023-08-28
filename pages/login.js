@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -6,9 +6,22 @@ import * as Yup from "yup";
 import authContext from "../context/auth/authContext";
 import Alerta from "../components/Alerta";
 
+import { useRouter } from "next/router";
+
 export default function Login() {
+  // Context
   const AuthContext = useContext(authContext);
-  const { mensaje, iniciarSesion } = AuthContext;
+  const { mensaje, autenticado, iniciarSesion } = AuthContext;
+
+  // Next router
+  const router = useRouter();
+
+  useEffect(() => {
+    if (autenticado) {
+      router.push("/");
+      // window.location.href = "/";
+    }
+  }, [autenticado]);
 
   // Formulario y validacion con formik y yup
   const formik = useFormik({
