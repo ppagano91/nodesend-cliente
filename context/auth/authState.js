@@ -66,7 +66,7 @@ const AuthState = ({ children }) => {
       console.log(error.response.data.msg);
       dispatch({
         type: LOGIN_ERROR,
-        payload: error.response.data.msg,
+        payload: error.response?.data.msg,
       });
 
       // Limpia la alerta despues de 3 segundos
