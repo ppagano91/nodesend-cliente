@@ -8,6 +8,7 @@ import {
   CREAR_ENLACE_ERROR,
   LIMPIAR_STATE,
   AGREGAR_PASSWORD,
+  AGREGAR_DESCARGAS,
 } from "../../types";
 
 export default (state, action) => {
@@ -64,10 +65,15 @@ export default (state, action) => {
       };
 
     case AGREGAR_PASSWORD:
-      console.log("AGREGAR_PASSWORD");
       return {
         ...state,
         password: action.payload,
+      };
+
+    case AGREGAR_DESCARGAS:
+      return {
+        ...state,
+        descargas: action.payload,
       };
 
     default:

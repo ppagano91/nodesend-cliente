@@ -9,6 +9,7 @@ import {
   CREAR_ENLACE_ERROR,
   LIMPIAR_STATE,
   AGREGAR_PASSWORD,
+  AGREGAR_DESCARGAS,
 } from "../../types";
 
 import appContext from "./appContext";
@@ -110,6 +111,14 @@ const AppState = ({ children }) => {
     });
   };
 
+  // Agregar un número de descargas
+  const agregarDescargas = (descargas) => {
+    dispatch({
+      type: AGREGAR_DESCARGAS,
+      payload: descargas,
+    });
+  };
+
   return (
     <appContext.Provider
       value={{
@@ -126,6 +135,7 @@ const AppState = ({ children }) => {
         crearEnlace,
         limpiarState,
         agregarPassword,
+        agregarDescargas,
       }}
     >
       {children}
