@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import appContext from "../context/app/appContext";
 
 const Formulario = () => {
   const [tienePassword, setTienePassword] = useState(false);
+
+  // Context de la app
+  const AppContext = useContext(appContext);
+  const { agregarPassword } = AppContext;
 
   return (
     <div className="w-full mt-20">
       <div>
         <label className="text-lg text-gray-800">Eliminar después de:</label>
         <select className="appearance-none w-full mt-2 bg-white border border-gray-400 text-black py-3 px-4 pr-8 rounded leading-none focus:outline-none focus:border-gray-500">
-          <option value="" selected disabled>
-            -- Seleccione --
-          </option>
+          <option devalue="">-- Seleccione --</option>
           <option value="1">1 Descarga</option>
           <option value="5">5 Descargas</option>
           <option value="10">10 Descargas</option>
@@ -33,6 +36,7 @@ const Formulario = () => {
             type="password"
             className="appearance-none w-full mt-2 bg-white border border-gray-400 text-black py-3 px-4 pr-8 rounded leading-none focus:outline-none focus:border-gray-500"
             placeholder="Escriba la contraseña"
+            onChange={(e) => agregarPassword(e.target.value)}
           />
         ) : null}
       </div>
