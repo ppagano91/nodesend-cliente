@@ -38,10 +38,10 @@ const AuthState = ({ children }) => {
         payload: respuesta.data.msg,
       });
     } catch (error) {
-      console.log(error.response.data.msg);
+      console.log(error.response?.data.msg);
       dispatch({
         type: REGISTRO_ERROR,
-        payload: error.response.data.msg,
+        payload: error.response?.data.msg,
       });
     }
 
@@ -63,7 +63,7 @@ const AuthState = ({ children }) => {
         payload: respuesta.data.token,
       });
     } catch (error) {
-      console.log(error.response.data.msg);
+      console.log(error.response?.data.msg);
       dispatch({
         type: LOGIN_ERROR,
         payload: error.response?.data.msg,
@@ -98,7 +98,7 @@ const AuthState = ({ children }) => {
       console.log(error.response);
       dispatch({
         type: LOGIN_ERROR,
-        payload: error.response.data.msg,
+        payload: error.response?.data.msg,
       });
     }
   };

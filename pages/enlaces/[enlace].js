@@ -1,11 +1,11 @@
 import Layout from "../../components/Layout";
 import clienteAxios from "../../config/axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import appContext from "../../context/app/appContext";
+import Alerta from "../../components/Alerta";
 
 export async function getServerSideProps({ params }) {
   const { enlace } = params;
-
-  console.log("enlace: ", enlace);
 
   const enlaces = await clienteAxios.get(`/api/enlaces/${enlace}`);
 
@@ -29,16 +29,31 @@ export async function getServerSidePaths() {
 
 export default function Enlace({ enlace }) {
   const [tienePassword, setTienePassword] = useState(enlace.password);
+  const [password, setPassword] = useState("");
 
-  console.log("tienePassword: ", tienePassword);
+  // Context de la app
+  const AppContext = useContext(appContext);
+  const { mostrarAlerta, mensaje_archivo } = AppContext;
+
+  console.log("enlace: ", enlace);
 
   const verificarPassword = async (e) => {
     e.preventDefault();
-    // const resultado = await clienteAxios.post(`/api/enlaces/${enlace.enlace}`, {
-    //   password: e.target.password.value,
-    // });
 
-    console.log("Verificando...");
+    const data = {
+      password,
+    };
+
+    try {
+      const resultado = await clienteAxios.post(
+        `/api/enlaces/${enlace.enlace}`,
+        data
+      );
+      console.log("resultado\n", resultado);
+      setTienePassword(resultado.data.password);
+    } catch (error) {
+      mostrarAlerta(error.response.data.msg);
+    }
   };
 
   // console.log(enlace);
@@ -49,6 +64,7 @@ export default function Enlace({ enlace }) {
           <p className="text-center">
             Este enlace está protegido por un password, colócalo a continuación
           </p>
+          {mensaje_archivo && <Alerta />}
           <div className="flex justify-center mt-5">
             <div className="w-full max-w-lg">
               <form
@@ -67,6 +83,8 @@ export default function Enlace({ enlace }) {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="password"
                     placeholder="Password del enlace"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <input
