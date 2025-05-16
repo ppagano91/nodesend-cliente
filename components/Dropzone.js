@@ -19,7 +19,7 @@ const Dropzone = () => {
     mostrarAlerta(
       "No se pudo subir, el limite es de 1MB, obten una cuenta gratis para subir archivos mas grandes"
     );
-    console.log("No se pudo subir, excede el limite permitido");
+    // console.log("No se pudo subir, excede el limite permitido");
   };
 
   // useCallback es para que no se ejecute cada vez que se renderiza

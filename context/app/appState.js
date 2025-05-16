@@ -55,7 +55,7 @@ const AppState = ({ children }) => {
 
     try {
       const resultado = await clienteAxios.post("/api/archivos", formData);
-      console.log(resultado.data);
+      // console.log(resultado.data);
       dispatch({
         type: SUBIR_ARCHIVO_EXITO,
         payload: {
@@ -64,7 +64,6 @@ const AppState = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: SUBIR_ARCHIVO_ERROR,
         payload: error.response.data.msg,

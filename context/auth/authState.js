@@ -32,13 +32,11 @@ const AuthState = ({ children }) => {
   const registrarUsuario = async (datos) => {
     try {
       const respuesta = await clienteAxios.post("/api/usuarios", datos);
-      console.log(respuesta);
       dispatch({
         type: REGISTRO_EXITOSO,
         payload: respuesta.data.msg,
       });
     } catch (error) {
-      console.log(error.response?.data.msg);
       dispatch({
         type: REGISTRO_ERROR,
         payload: error.response?.data.msg,
@@ -57,13 +55,11 @@ const AuthState = ({ children }) => {
   const iniciarSesion = async (datos) => {
     try {
       const respuesta = await clienteAxios.post("/api/auth", datos);
-      console.log(respuesta);
       dispatch({
         type: LOGIN_EXITOSO,
         payload: respuesta.data.token,
       });
     } catch (error) {
-      console.log(error.response?.data.msg);
       dispatch({
         type: LOGIN_ERROR,
         payload: error.response?.data.msg,
@@ -87,7 +83,6 @@ const AuthState = ({ children }) => {
 
     try {
       const respuesta = await clienteAxios.get("/api/auth");
-      console.log(respuesta);
       if (respuesta.data.usuario) {
         dispatch({
           type: USUARIO_AUTENTICADO,
@@ -95,7 +90,6 @@ const AuthState = ({ children }) => {
         });
       }
     } catch (error) {
-      console.log(error.response);
       dispatch({
         type: LOGIN_ERROR,
         payload: error.response?.data.msg,
@@ -104,7 +98,6 @@ const AuthState = ({ children }) => {
   };
 
   const cerrarSesion = () => {
-    console.log("Cerrando Sesión");
     dispatch({
       type: CERRAR_SESION,
     });

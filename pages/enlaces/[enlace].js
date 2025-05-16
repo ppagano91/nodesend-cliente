@@ -7,30 +7,30 @@ import Alerta from "../../components/Alerta";
 export async function getServerSideProps({ params }) {
   try {
     const { enlace } = params;
-    console.log("Buscando enlace:", enlace);
-    
     const response = await clienteAxios.get(`/api/enlaces/${enlace}`);
-    console.log("Respuesta:", response.status);
     
     return {
       props: {
         enlace: response.data,
+        error: null
       },
     };
   } catch (error) {
-    console.error("Error al obtener enlace:", error.message);
-    
-    // Importante: devuelve notFound para mostrar la página 404
+
     return {
-      notFound: true,
+      props: {
+        enlace: null,
+        error: {
+          statusCode: error.response?.status || 500,
+          message: error.response?.data?.msg || "Error al obtener el enlace"
+        }
+      },
     };
   }
 }
 
 export async function getServerSidePaths() {
   const enlaces = await clienteAxios.get("/api/enlaces");
-
-  console.log("getStaticPaths\n",enlaces);
 
   return {
     paths: enlaces.data.enlaces.map((enlace) => ({
@@ -40,15 +40,35 @@ export async function getServerSidePaths() {
   };
 }
 
-export default function Enlace({ enlace }) {
+export default function Enlace({ enlace, error }) {
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center py-10">
+          <h1 className="text-4xl text-center text-red-500 mb-4">
+            ¡Error {error.statusCode}!
+          </h1>
+          <p className="text-center text-gray-700 mb-6">
+            {error.message}
+          </p>
+          <a 
+            href="/"
+            className="bg-red-500 text-center px-10 py-3 rounded uppercase font-bold text-white cursor-pointer hover:bg-red-600"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </Layout>
+    );
+  }
+
   const [tienePassword, setTienePassword] = useState(enlace.password);
   const [password, setPassword] = useState("");
 
   // Context de la app
   const AppContext = useContext(appContext);
   const { mostrarAlerta, mensaje_archivo } = AppContext;
-
-  console.log("enlace: ", enlace);
 
   const verificarPassword = async (e) => {
     e.preventDefault();
@@ -62,7 +82,6 @@ export default function Enlace({ enlace }) {
         `/api/enlaces/${enlace.enlace}`,
         data
       );
-      console.log("resultado\n", resultado);
       setTienePassword(resultado.data.password);
     } catch (error) {
       mostrarAlerta(error.response.data.msg);
