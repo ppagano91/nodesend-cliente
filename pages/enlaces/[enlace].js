@@ -5,19 +5,32 @@ import appContext from "../../context/app/appContext";
 import Alerta from "../../components/Alerta";
 
 export async function getServerSideProps({ params }) {
-  const { enlace } = params;
-
-  const enlaces = await clienteAxios.get(`/api/enlaces/${enlace}`);
-
-  return {
-    props: {
-      enlace: enlaces.data,
-    },
-  };
+  try {
+    const { enlace } = params;
+    console.log("Buscando enlace:", enlace);
+    
+    const response = await clienteAxios.get(`/api/enlaces/${enlace}`);
+    console.log("Respuesta:", response.status);
+    
+    return {
+      props: {
+        enlace: response.data,
+      },
+    };
+  } catch (error) {
+    console.error("Error al obtener enlace:", error.message);
+    
+    // Importante: devuelve notFound para mostrar la página 404
+    return {
+      notFound: true,
+    };
+  }
 }
 
 export async function getServerSidePaths() {
   const enlaces = await clienteAxios.get("/api/enlaces");
+
+  console.log("getStaticPaths\n",enlaces);
 
   return {
     paths: enlaces.data.enlaces.map((enlace) => ({

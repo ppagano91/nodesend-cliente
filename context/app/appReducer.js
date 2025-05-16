@@ -75,6 +75,14 @@ export default (state, action) => {
         ...state,
         descargas: action.payload,
       };
+    
+    case CREAR_ENLACE_ERROR:
+      return {
+        ...state,
+        url: '',
+        cargando: false,
+        mensaje_archivo: action.payload
+      }
 
     default:
       return state;

@@ -74,27 +74,64 @@ const AppState = ({ children }) => {
 
   // Crear enlace
   const crearEnlace = async () => {
-    const data = {
-      nombre: state.nombre,
-      nombre_original: state.nombre_original,
-      descargas: state.descargas,
-      password: state.password,
-      autor: state.autor,
-    };
-
-    console.log(data);
-
-    try {
-      const resultado = await clienteAxios.post("/api/enlaces", data);
-      console.log(resultado.data.msg);
-      dispatch({
-        type: CREAR_ENLACE_EXITO,
-        payload: resultado.data.msg,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const data = {
+    nombre: state.nombre,
+    nombre_original: state.nombre_original,
+    descargas: state.descargas,
+    password: state.password,
+    autor: state.autor,
   };
+
+  try {
+    const resultado = await clienteAxios.post("/api/enlaces", data);
+    dispatch({
+      type: CREAR_ENLACE_EXITO,
+      payload: resultado.data.msg,
+    });
+  } catch (error) {
+    // Mejor visualización y manejo de errores
+    console.error("Error al crear enlace:");
+    
+    // Mostrar detalles específicos del error
+    if (error.response) {
+      // El servidor respondió con un código de estado fuera del rango 2xx
+      console.error("Datos del error:", {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        data: error.response.data,
+        headers: error.response.headers
+      });
+      
+      // Dispatch para manejar el error en el estado
+      dispatch({
+        type: CREAR_ENLACE_ERROR,
+        payload: error.response.data.msg || "Error en el servidor"
+      });
+      
+      // Mostrar alerta al usuario
+      mostrarAlerta(error.response.data.msg || "Error en el servidor");
+    } else if (error.request) {
+      // La petición fue hecha pero no se recibió respuesta
+      console.error("No se recibió respuesta del servidor:", error.request);
+      dispatch({
+        type: CREAR_ENLACE_ERROR,
+        payload: "No se pudo conectar con el servidor"
+      });
+      mostrarAlerta("No se pudo conectar con el servidor");
+    } else {
+      // Algo ocurrió al configurar la petición
+      console.error("Error de configuración:", error.message);
+      dispatch({
+        type: CREAR_ENLACE_ERROR,
+        payload: "Error al procesar la solicitud"
+      });
+      mostrarAlerta("Error al procesar la solicitud");
+    }
+    
+    // Mostrar la pila de llamadas para depuración
+    console.error("Stack:", error.stack);
+  }
+};
 
   const limpiarState = () => {
     dispatch({
